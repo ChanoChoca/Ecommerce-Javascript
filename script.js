@@ -1,3 +1,20 @@
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.1/firebase-app.js";
+import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.12.1/firebase-firestore.js";
+
+// Configuración de Firebase
+const firebaseConfig = {
+    apiKey: "AIzaSyAWSB8cvVnoRkeWo6i9PMrUeYf3TxLSb0Q",
+    authDomain: "javascript-app-c1c1d.firebaseapp.com",
+    projectId: "javascript-app-c1c1d",
+    storageBucket: "javascript-app-c1c1d.appspot.com",
+    messagingSenderId: "831058231435",
+    appId: "1:831058231435:web:69dc0c56911c371952d48e"
+};
+
+// Inicializar Firebase
+const api = initializeApp(firebaseConfig);
+const db = getFirestore(api);
+
 // ***** SE CAMBIAN FONTS *****
 const linkElement = document.createElement('link');
 linkElement.rel = 'stylesheet';
@@ -10,35 +27,37 @@ elementos.forEach((elemento) => {
 });
 
 // ***** PRIMER MÉTODO (CARGA DE PRODUCTOS) *****
+
 class Producto {
-    constructor(id, name, type, price, stock, description) {
+    constructor(id, name, type, price, stock, description, image) {
         this.id = id;
         this.name = name;
         this.type = type;
         this.price = price;
         this.stock = stock;
         this.description = description;
+        this.image = image;
     }
 }
 
 const productosBase = [
-    {id:"0", name:"VK 72.01 (K)", type:"Tanque", price:650, stock:1000, description:"Tanque pesado alemán de recompensa de nivel X"},
-    {id:"1", name:"T95/FV4201 Chieftain", type:"Tanque", price:650, stock:1000, description:"Tanque pesado británico de recompensa de nivel X"},
-    {id:"2", name:"Object 260", type:"Tanque", price:650, stock:1000, description:"Tanque pesado soviético de recompensa de nivel X"},
-    {id:"3", name:"Object 907", type:"Tanque", price:650, stock:1000, description:"Tanque medio soviético de recompensa de nivel X"},
-    {id:"4", name:"Object 279 early", type:"Tanque", price:650, stock:1000, description:"Tanque pesado soviético de recompensa de nivel X"},
-    {id:"5", name:"WN8", type:"MejoraDeCuenta", price:12.94, stock:undefined, description:"12.94 USD * 10 batallas"},
-    {id:"6", name:"Créditos y Experiencia", type:"MejoraDeCuenta", price:8.82, stock:undefined, description:"8.82 USD * (1M créditos + 30K experiencia)"},
-    {id:"7", name:"Créditos", type:"MejoraDeCuenta", price:5.95, stock:undefined, description:"5.95 USD * 1M créditos"},
-    {id:"8", name:"Experiencia", type:"MejoraDeCuenta", price:9.44, stock:undefined, description:"9.44 USD * 50K experiencia"},
-    {id:"9", name:"Bonos", type:"MejoraDeCuenta", price:16.96, stock:undefined, description:"16.96 USD * 100 bonos"}
+    {id:"0", name:"VK 72.01 (K)", type:"Tanque", price:650, stock:1000, description:"Tanque pesado alemán de recompensa de nivel X", image: "https://tanks.gg/img/tanks/germany-G92_VK7201.png"},
+    {id:"1", name:"T95/FV4201 Chieftain", type:"Tanque", price:650, stock:1000, description:"Tanque pesado británico de recompensa de nivel X", image: "https://tanks.gg/img/tanks/uk-GB98_T95_FV4201_Chieftain.png"},
+    {id:"2", name:"Object 260", type:"Tanque", price:650, stock:1000, description:"Tanque pesado soviético de recompensa de nivel X", image: "https://tanks.gg/img/tanks/ussr-R110_Object_260.png"},
+    {id:"3", name:"Object 907", type:"Tanque", price:650, stock:1000, description:"Tanque medio soviético de recompensa de nivel X", image: "https://tanks.gg/img/tanks/ussr-R95_Object_907.png"},
+    {id:"4", name:"Object 279 early", type:"Tanque", price:650, stock:1000, description:"Tanque pesado soviético de recompensa de nivel X", image: "https://tanks.gg/img/tanks/ussr-R157_Object_279R.png"},
+    {id:"5", name:"WN8", type:"MejoraDeCuenta", price:12.94, stock:null, description:"12.94 USD * 10 batallas", image: "https://www.overtank.com/image/thumbnails/18/ff/wn8b_png-102392-380x380.png"},
+    {id:"6", name:"Créditos y Experiencia", type:"MejoraDeCuenta", price:8.82, stock:null, description:"8.82 USD * (1M créditos + 30K experiencia)", image: "https://www.overtank.com/image/thumbnails/19/fd/silver_7_overtank_png-106455-380x380.png"},
+    {id:"7", name:"Créditos", type:"MejoraDeCuenta", price:5.95, stock:null, description:"5.95 USD * 1M créditos", image: "https://www.overtank.com/image/thumbnails/18/fb/silver_normal_png_100455_380x380_png-102335-250x250.png"},
+    {id:"8", name:"Experiencia", type:"MejoraDeCuenta", price:9.44, stock:null, description:"9.44 USD * 50K experiencia", image: "https://www.overtank.com/image/thumbnails/18/fc/anyxp_silver_png_100491_380x380_png-102336-250x250.png"},
+    {id:"9", name:"Bonos", type:"MejoraDeCuenta", price:16.96, stock:null, description:"16.96 USD * 100 bonos", image: "https://www.overtank.com/image/thumbnails/18/fb/bonds_png-102334-250x250.png"}
 ]
 
 const productos = JSON.parse(localStorage.getItem("productos")) || []
 
-const agregarProducto = ({id, name, type, price, stock, description}) => {
+const agregarProducto = ({id, name, type, price, stock, description, image}) => {
     if (!productos.some(prod => prod.id === id)) {
-        const productoNuevo = new Producto(id, name, type, price, stock, description)
+        const productoNuevo = new Producto(id, name, type, price, stock, description, image)
         productos.push(productoNuevo)
         localStorage.setItem('productos', JSON.stringify(productos))
     }
@@ -66,14 +85,14 @@ const totalCarritoRender = () => {
     carritoTotal.innerHTML = `<p class="lead my-5">Precio total: $ ${totalCarrito()} USD</p>`
 }
 
-const agregarCarrito = ({id, name, type, price, stock, description, quantity}) => {
+const agregarCarrito = ({id, name, type, price, stock, description, quantity, image}) => {
     const productoEnCarrito = carrito.find(item => item.id === id);
     if (productoEnCarrito) {
         // Si el producto ya está en el carrito, actualizamos la cantidad
         productoEnCarrito.quantity += quantity;
     } else {
         // Si el producto no está en el carrito, lo agregamos
-        carrito.push({id, name, type, price, stock, description, quantity});
+        carrito.push({id, name, type, price, stock, description, quantity, image});
     }
     totalCarritoRender();
     renderizarCarrito();
@@ -82,7 +101,7 @@ const agregarCarrito = ({id, name, type, price, stock, description, quantity}) =
 const renderizarProductos = (arrayUtilizado) => {
     const contenedorProductos = document.getElementById("contenedorProductos")
     contenedorProductos.innerHTML = ""
-    arrayUtilizado.forEach(({id, name, type, price, stock, description}) => {
+    arrayUtilizado.forEach(({id, name, type, price, stock, description, image}) => {
         const prodCard = document.createElement("div")
         prodCard.classList.add("card", "col-xs")
         prodCard.style.width = '270px';
@@ -90,12 +109,12 @@ const renderizarProductos = (arrayUtilizado) => {
         prodCard.style.margin = '3px';
         prodCard.id = id
         prodCard.innerHTML = `
-            <img src="./assets/${id}.png" class="card-img-top" style="height: 244px" alt="${name}">
+            <img src="${image}" class="card-img-top" style="height: 244px" alt="${name}">
             <div class="card-body">
                 <h5 class="card-title">${name}</h5>
                 <h6>${type}</h6>
                 <p class="card-text">${description}</p>
-                <span style="display: ${stock !== undefined ? 'inline' : 'none'}">Stock: ${stock}</span>
+                <span style="display: ${stock !== null ? 'inline' : 'none'}">Stock: ${stock}</span>
                 <span>$ ${price}</span>
                 <form id="form${id}">
                     <label for="contador${id}">Cantidad</label>
@@ -109,7 +128,7 @@ const renderizarProductos = (arrayUtilizado) => {
             evento.preventDefault()
             const contadorQuantity = Number(document.getElementById(`contador${id}`).value)
             if (contadorQuantity > 0) {
-                agregarCarrito({id, name, type, price, stock, description, quantity:contadorQuantity})
+                agregarCarrito({id, name, type, price, stock, description, quantity:contadorQuantity, image})
                 renderizarCarrito()
                 const form = document.getElementById(`form${id}`)
                 form.reset()
@@ -125,11 +144,11 @@ let carrito = JSON.parse(localStorage.getItem("carrito")) || []
 const renderizarCarrito = () => {
     const listaCarrito = document.getElementById("listaCarrito");
     listaCarrito.innerHTML = "";
-    carrito.forEach(({id, name, price, quantity}) => {
+    carrito.forEach(({id, name, price, quantity, image}) => {
         let elementoLista = document.createElement("tr");
         elementoLista.innerHTML = `
         <td>
-            <img src="./assets/${id}.png" class="card-img-top" style="height: 165.41px" alt="${name}">
+            <img src="${image}" class="card-img-top" style="height: 165.41px" alt="${name}">
         </td>
         <td style="width: 75%">
             <p style="background-color: #1c1c1e; color: #fff">${name}</p>
@@ -182,11 +201,9 @@ const actualizarStockEnLocalStorage = () => {
 const finalizarCompra = async (event) => {
     event.preventDefault();
 
-    const mensaje = document.getElementById("carritoTotal");
-
     if (carrito.some(item => {
         const producto = productos.find(prod => prod.id === item.id);
-        return producto.stock !== undefined && producto.stock < item.quantity;
+        return producto.stock !== null && producto.stock < item.quantity;
     })) {
         Swal.fire({
             icon: 'error',
@@ -198,7 +215,7 @@ const finalizarCompra = async (event) => {
 
     carrito.forEach(item => {
         const producto = productos.find(prod => prod.id === item.id);
-        if (producto.stock !== undefined) {
+        if (producto.stock !== null) {
             producto.stock -= item.quantity;
         }
     });
@@ -207,9 +224,23 @@ const finalizarCompra = async (event) => {
 
     const data = new FormData(event.target);
     const cliente = Object.fromEntries(data);
+
     const ticket = { cliente: cliente, total: totalCarrito(), id: pedidos.length, productos: carrito };
     pedidos.push(ticket);
     localStorage.setItem("pedidos", JSON.stringify(pedidos));
+
+    const orden = {
+        cliente: cliente,
+        total: totalCarrito(),
+        productos: carrito,
+        fecha: new Date()
+    };
+    try {
+        await addDoc(collection(db, "ordenes"), orden);
+    } catch (error) {
+        return;
+    }
+
     borrarCarrito();
     Swal.fire(
         'Compra Exitosa!',
@@ -236,10 +267,9 @@ compraFinal.addEventListener("submit", (event) => {
 // ***** PRINCIPAL *****
 const app = () => {
     productosPreexistentes()
-    //fetchProductosExternos(); // Cargar productos externos de manera asincrónica
     renderizarProductos(productos)
     renderizarCarrito()
     totalCarritoRender()
 }
 
-app()
+app();
