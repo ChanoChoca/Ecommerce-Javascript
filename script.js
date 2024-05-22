@@ -115,10 +115,10 @@ const renderizarProductos = (arrayUtilizado) => {
                 <h6>${type}</h6>
                 <p class="card-text">${description}</p>
                 <span style="display: ${stock !== null ? 'inline' : 'none'}">Stock: ${stock}</span>
-                <span>$ ${price}</span>
-                <form id="form${id}">
-                    <label for="contador${id}">Cantidad</label>
-                    <input type="number" placeholder="0" id="contador${id}">
+                <span>Precio: $${price}</span>
+                <form id="form${id}" class="text-center">
+                    <label for="contador${id}"  class="form-label mt-3">Cantidad</label>
+                    <input type="number" placeholder="0" id="contador${id}" class="form-control mb-3">
                     <button class="btn btn-primary" id="botonProd${id}">Agregar</button>
                 </form>
             </div>`
@@ -146,18 +146,19 @@ const renderizarCarrito = () => {
     listaCarrito.innerHTML = "";
     carrito.forEach(({id, name, price, quantity, image}) => {
         let elementoLista = document.createElement("tr");
+        elementoLista.className = "color-tabla";
         elementoLista.innerHTML = `
         <td>
             <img src="${image}" class="card-img-top" style="height: 165.41px" alt="${name}">
         </td>
-        <td style="width: 75%">
+        <td style="width: 65%" class="color-tabla">
             <p style="background-color: #1c1c1e; color: #fff">${name}</p>
             <p style="background-color: #1c1c1e; color: #fff">Precio por unidad: ${price} USD</p>
             <p style="background-color: #1c1c1e; color: #fff">Cantidad: ${quantity}</p>
             <p style="background-color: #1c1c1e; color: #fff">Subtotal: ${price * quantity} USD</p>
         </td>
-        <td style="width: 10%">
-            <button style="background-color: #dc3545" id="eliminarCarrito${id}">X</button>
+        <td style="width: 17%">
+            <button class="btn_pseudoclase2" id="eliminarCarrito${id}">Eliminar producto</button>
         </td>
         `;
 
@@ -208,7 +209,8 @@ const finalizarCompra = async (event) => {
         Swal.fire({
             icon: 'error',
             title: 'Oops...',
-            text: 'No hay suficiente stock para completar la compra.'
+            text: 'No hay suficiente stock para completar la compra.',
+            confirmButtonColor: '#ff7e00'
         });
         return;
     }
@@ -242,11 +244,12 @@ const finalizarCompra = async (event) => {
     }
 
     borrarCarrito();
-    Swal.fire(
-        'Compra Exitosa!',
-        'Muchas gracias por su compra, los esperamos pronto.',
-        'success'
-    );
+    Swal.fire({
+        title: '¡Compra Exitosa!',
+        text: 'Muchas gracias por su compra, los esperamos pronto.',
+        icon: 'success',
+        confirmButtonColor: '#ff7e00'
+    });
     actualizarStockEnLocalStorage();
 };
 
@@ -257,9 +260,10 @@ compraFinal.addEventListener("submit", (event) => {
         finalizarCompra(event).then();
     } else {
         Swal.fire({
-            icon: 'warning',
+            icon: 'info',
             title: 'Carrito vacío',
-            text: 'Por favor, agregue productos al carrito antes de finalizar la compra.'
+            text: 'Por favor, agregue productos al carrito antes de finalizar la compra.',
+            confirmButtonColor: '#ff7e00'
         });
     }
 })

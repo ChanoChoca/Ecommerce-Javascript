@@ -6,6 +6,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto&display=swap">
+  <link href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-dark@4/dark.css" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
   <title>Title</title>
 </head>
 <body>
@@ -18,7 +20,7 @@
       <h2 class="pt-3">Productos</h2>
       <form>
         <label for="tipoProducto"></label>
-        <select id="tipoProducto">
+        <select id="tipoProducto" class="form-select">
           <option selected value="0">Todo</option>
           <option value="Tanque">Tanques</option>
           <option value="MejoraDeCuenta">Mejora de cuenta</option>
@@ -36,20 +38,20 @@
     <table class="table table-bordered" id="listaCarrito" style="background-color: #1c1c1e"></table>
     <p id="carritoTotal"></p>
 
-    <form id="formCompraFinal">
-      <div class="mb-3">
+    <form id="formCompraFinal" class="row justify-content-center">
+      <div class="mb-3 col-11">
         <label for="nombre" class="form-label">Nombre:</label>
         <input type="text" class="form-control" name="nombre" id="nombre" required>
       </div>
-      <div class="mb-3">
+      <div class="mb-3 col-11">
         <label for="email" class="form-label">Email:</label>
         <input type="email" class="form-control" name="email" id="email" required>
       </div>
-      <div class="mb-3 form-check">
+      <div class="mb-3 col-11">
         <label for="telefono" class="form-label">Telefono:</label>
         <input type="number" class="form-control" name="telefono" id="telefono" required>
       </div>
-      <input type="submit" value="Finalizar Compra" class="btn btn-primary" id="botonCompraFinal">
+      <input type="submit" value="Finalizar Compra" class="btn_pseudoclase col-2" id="botonCompraFinal">
     </form>
   </article>
 </main>

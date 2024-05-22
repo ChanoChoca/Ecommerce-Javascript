@@ -1,0 +1,51 @@
+body {
+    background-color: #1c1c1e;
+    color: #f9f5e1;
+}
+
+.btn_pseudoclase, #contenedorProductos button {
+    background-color: #fff;
+    color: rgb(242, 100, 2);
+    border: 2px solid rgb(242, 100, 2);
+    border-radius: 0;
+    padding: 10px;
+    transition: 0.3s ease;
+}
+
+.btn_pseudoclase:hover, .btn_pseudoclase:active, #contenedorProductos button:hover, #contenedorProductos button:active {
+    color: #ffffff !important;
+    background-color: rgb(242, 100, 2) !important;
+    border: 2px solid rgb(242, 100, 2) !important;
+    box-shadow: none;
+}
+
+#listaCarrito, #listaCarrito p{
+    background-color: #000 !important;
+    font-size: x-large;
+}
+
+#contenedorProductos > * {
+    background-color: #000;
+    color: #ffffff;
+}
+
+input:focus, textarea:focus, select:focus {
+    border-color: #ff7e00 !important;
+    box-shadow: 0 0 0 0.2rem #ff7e00 !important;
+}
+
+.btn_pseudoclase2 {
+    background-color: #fff;
+    color: #ff0000 !important;
+    border: 2px solid #ff0000 !important;
+    border-radius: 0 !important;
+    padding: 10px;
+    transition: 0.3s ease;
+}
+
+.btn_pseudoclase2:hover, .btn_pseudoclase2:active {
+    color: #ffffff !important;
+    background-color: #ff0000 !important;
+    border: 2px #ff0000 !important;
+    box-shadow: none;
+}
